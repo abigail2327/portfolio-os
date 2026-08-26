@@ -1,0 +1,624 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400..700&family=Nunito:wght@400;600;700&family=Caveat:wght@600&display=swap');
+
+:root {
+  --taskbar-height: 48px;
+  --window-border: #3a3f4b;
+  --window-bg: #1c1f26;
+  --window-titlebar: #262b35;
+  --accent: #ff5da2;
+  --accent-2: #4ad0ff;
+  --text-light: #f0f2f5;
+  --text-dim: #a7adba;
+  font-family: 'Nunito', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: var(--text-light);
+}
+
+body {
+  background: #05060a;
+}
+
+.desktop-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(180deg, #3f8ee8 0%, #7bb8f0 38%, #bcdff5 62%, #d8ecf5 72%);
+  user-select: none;
+}
+
+.hill {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -18%;
+  height: 55%;
+  background: radial-gradient(ellipse 70% 100% at 50% 100%, #6fc23e 0%, #4a9e2a 55%, #367a1f 100%);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.hill.back {
+  bottom: -24%;
+  height: 42%;
+  opacity: 0.55;
+  filter: saturate(0.85);
+}
+
+.cloud {
+  position: absolute;
+  background: #fff;
+  border-radius: 999px;
+  opacity: 0.95;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 60%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 40% 80%, #fff, transparent),
+    radial-gradient(1px 1px at 85% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 55% 45%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 10% 65%, #fff, transparent),
+    radial-gradient(1px 1px at 90% 85%, #fff, transparent),
+    radial-gradient(1px 1px at 30% 10%, #fff, transparent);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ---------- Desktop icons ---------- */
+.desktop-icons {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 92px);
+  gap: 18px;
+  z-index: 1;
+}
+
+.desktop-icon {
+  width: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.desktop-icon:hover, .desktop-icon.selected {
+  background: rgba(255, 255, 255, 0.08);
+  outline: 1px dashed rgba(255, 255, 255, 0.25);
+}
+
+.desktop-icon .icon-art {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5));
+}
+
+.desktop-icon .icon-label {
+  font-size: 12.5px;
+  line-height: 1.25;
+  color: var(--text-light);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* ---------- Taskbar ---------- */
+.taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--taskbar-height);
+  background: rgba(20, 22, 28, 0.85);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  z-index: 500;
+}
+
+.start-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #ff7ab8, var(--accent));
+  border: none;
+  color: #22111a;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.start-button:hover { filter: brightness(1.08); }
+
+.taskbar-divider {
+  width: 1px;
+  height: 26px;
+  background: rgba(255,255,255,0.12);
+}
+
+.taskbar-item {
+  height: 34px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid transparent;
+  color: var(--text-light);
+  font-size: 12.5px;
+  cursor: pointer;
+  max-width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.taskbar-item.active {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.taskbar-clock {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  padding: 0 8px;
+}
+
+/* ---------- Start Menu ---------- */
+.start-menu {
+  position: absolute;
+  bottom: calc(var(--taskbar-height) + 8px);
+  left: 10px;
+  width: 260px;
+  background: rgba(24, 27, 34, 0.97);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 600;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.start-menu-header {
+  font-size: 12px;
+  color: var(--text-dim);
+  padding: 4px 8px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 6px;
+}
+.start-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.start-menu-item:hover { background: rgba(255,255,255,0.08); }
+
+/* ---------- Windows ---------- */
+.os-window {
+  position: absolute;
+  background: var(--window-bg);
+  border: 1px solid var(--window-border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+  display: flex;
+  flex-direction: column;
+}
+
+.os-window-titlebar {
+  height: 38px;
+  background: linear-gradient(180deg, #2c313d, var(--window-titlebar));
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  cursor: grab;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.os-window-titlebar:active { cursor: grabbing; }
+
+.os-window-title {
+  flex: 1;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.os-window-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.win-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: var(--text-light);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+}
+.win-btn:hover { background: rgba(255,255,255,0.18); }
+.win-btn.close:hover { background: #e5484d; }
+
+.os-window-body {
+  flex: 1;
+  overflow: auto;
+  background: #14161c;
+  color: var(--text-light);
+}
+
+.resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  touch-action: none;
+}
+
+.os-window-titlebar { touch-action: none; }
+
+/* ---------- Responsive / touch ---------- */
+@media (max-width: 720px), (pointer: coarse) {
+  .desktop-icons, .desktop-icon { touch-action: none; }
+  .taskbar-item span { display: none; }
+  .taskbar-item { padding: 0 8px; }
+  .start-button { padding: 0 10px; font-size: 12px; }
+  .resize-handle { width: 26px; height: 26px; }
+  .os-window { max-width: calc(100vw - 12px); max-height: calc(100vh - var(--taskbar-height) - 12px); }
+}
+
+/* ---------- README markdown rendering ---------- */
+.readme-body h1, .readme-body h2, .readme-body h3 {
+  color: var(--text-light);
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+.readme-body p { margin: 8px 0; color: var(--text-light); }
+.readme-body a { color: var(--accent-2); }
+.readme-body code {
+  background: rgba(255,255,255,0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+.readme-body pre {
+  background: #0e1015;
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.readme-body pre code { background: none; padding: 0; }
+.readme-body img { max-width: 100%; border-radius: 6px; margin: 8px 0; }
+.readme-body ul, .readme-body ol { padding-left: 22px; }
+.readme-body blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 8px 0;
+  padding: 4px 12px;
+  color: var(--text-dim);
+}
+
+/* ---------- Context menu ---------- */
+.context-menu {
+  position: fixed;
+  min-width: 180px;
+  background: rgba(28, 31, 38, 0.98);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 6px;
+  z-index: 900;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+}
+.context-menu-item {
+  padding: 7px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-light);
+}
+.context-menu-item:hover { background: rgba(255,255,255,0.1); }
+.context-menu-separator {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 4px 2px;
+}
+
+.paint-btn {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-light);
+  cursor: pointer;
+}
+.paint-btn:hover { background: rgba(255,255,255,0.14); }
+
+/* ---------- Paint app (classic-style chrome) ---------- */
+.paint-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #c8c6bd;
+  color: #1c1f26;
+  font-family: 'Nunito', system-ui, sans-serif;
+}
+
+.paint-menubar {
+  display: flex;
+  gap: 14px;
+  padding: 4px 10px;
+  background: #ded9cf;
+  border-bottom: 1px solid #a9a596;
+  font-size: 12.5px;
+  user-select: none;
+}
+.paint-menu-wrap { position: relative; }
+.paint-menu-label { padding: 2px 4px; cursor: pointer; border-radius: 2px; }
+.paint-menu-label:hover, .paint-menu-label.open { background: #3a6ea5; color: #fff; }
+.paint-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #f2f0e8;
+  border: 1px solid #8a8677;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+  min-width: 140px;
+  z-index: 20;
+  padding: 2px;
+}
+.paint-dropdown-item {
+  padding: 5px 10px;
+  font-size: 12.5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.paint-dropdown-item:hover { background: #3a6ea5; color: #fff; }
+
+.paint-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.paint-toolbox {
+  width: 78px;
+  flex-shrink: 0;
+  background: #ded9cf;
+  border-right: 1px solid #a9a596;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.paint-tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+}
+.paint-tool-btn {
+  width: 32px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ded9cf;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.7), inset -1px -1px 0 rgba(0,0,0,0.25);
+}
+.paint-tool-btn:hover { background: #e8e4da; }
+.paint-tool-btn.active {
+  background: #c3beb1;
+  box-shadow: inset 1px 1px 0 rgba(0,0,0,0.3), inset -1px -1px 0 rgba(255,255,255,0.5);
+}
+.paint-tool-options {
+  background: #ded9cf;
+  border: 1px solid #a9a596;
+  border-radius: 2px;
+  padding: 6px;
+  flex: 1;
+}
+.paint-size-row {
+  display: flex;
+  align-items: center;
+  padding: 6px 4px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.paint-size-row:hover, .paint-size-row.active { background: #c3beb1; }
+
+.paint-canvas-area {
+  flex: 1;
+  min-width: 0;
+  background: #a9a596;
+  padding: 12px;
+  overflow: auto;
+}
+.paint-canvas {
+  background: #fff;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  cursor: crosshair;
+  touch-action: none;
+  display: block;
+}
+
+.paint-palette-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: #ded9cf;
+  border-top: 1px solid #a9a596;
+}
+.paint-swatch-indicator {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+.paint-swatch-bg {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #6b6b6b;
+}
+.paint-swatch-fg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #6b6b6b;
+}
+.paint-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  grid-template-rows: repeat(2, 15px);
+  gap: 2px;
+}
+.paint-palette-cell {
+  border: 1px solid rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+
+/* ---------- STAX HUD (Score/Level/Lines/Next) ---------- */
+.gb-stat-box {
+  border: 2px solid #0f380f;
+  border-radius: 8px;
+  background: #8bac0f;
+  padding: 5px 4px;
+  text-align: center;
+}
+.gb-stat-label {
+  font-size: 8px;
+  color: #0f380f;
+  font-family: 'Pixelify Sans', monospace;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.gb-stat-value {
+  font-size: 13px;
+  color: #0f380f;
+  font-family: 'Pixelify Sans', monospace;
+  font-weight: 700;
+}
+
+/* ---------- Wallpaper presets ---------- */
+.desktop-root.wallpaper-1 {
+  background: linear-gradient(180deg, #3f8ee8 0%, #7bb8f0 38%, #bcdff5 62%, #d8ecf5 72%);
+}
+.desktop-root.wallpaper-2 {
+  background: radial-gradient(ellipse at 60% 35%, #2a1f3d 0%, #120e1c 45%, #05050a 100%);
+}
+.desktop-root.wallpaper-3 {
+  background: linear-gradient(160deg, #ff9a6b 0%, #ff6b9a 35%, #6b5bff 75%, #201a4a 100%);
+}
+.desktop-root.wallpaper-4 {
+  background: linear-gradient(180deg, #2a1a4a 0%, #6a3d7a 35%, #d97a5a 65%, #f5b46a 85%, #ffd28a 100%);
+}
+
+.dubai-skyline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 42%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  pointer-events: none;
+}
+.dubai-building {
+  background: #1c1430;
+  flex-shrink: 0;
+}
+.dubai-window {
+  position: absolute;
+  background: #ffd28a;
+  opacity: 0.85;
+}
+.dubai-sun {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe4a3 0%, #ffb15e 70%, rgba(255,177,94,0) 100%);
+}
+
+.wallpaper-swatch-1 { background: linear-gradient(180deg, #3f8ee8 0%, #7bb8f0 38%, #bcdff5 62%, #d8ecf5 72%); }
+.wallpaper-swatch-2 { background: radial-gradient(ellipse at 60% 35%, #2a1f3d 0%, #120e1c 45%, #05050a 100%); }
+.wallpaper-swatch-3 { background: linear-gradient(160deg, #ff9a6b 0%, #ff6b9a 35%, #6b5bff 75%, #201a4a 100%); }
+.wallpaper-swatch-4 { background: linear-gradient(180deg, #2a1a4a 0%, #6a3d7a 35%, #d97a5a 65%, #f5b46a 85%, #ffd28a 100%); }
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  background: #05060a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  gap: 18px;
+}
+.boot-logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 22px;
+  color: var(--accent);
+  text-shadow: 0 0 18px rgba(255,93,162,0.6);
+  letter-spacing: 2px;
+}
+.boot-bar {
+  width: 220px;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+.boot-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.boot-hint {
+  font-size: 12px;
+  color: var(--text-dim);
+}
