@@ -14,7 +14,7 @@ three original mini-games, and a working Paint app. Inspired by
 [![Vite](https://img.shields.io/badge/Bundler-Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
 [![Zustand](https://img.shields.io/badge/State-Zustand-433E38)](https://github.com/pmndrs/zustand)
 
-[Live Demo](#) · [Report a Bug](https://github.com/abigail2327/portfolio-os/issues) · [Features](#-features)
+[Live Demo](https://abigaildacosta.vercel.app) · [Report a Bug](https://github.com/abigail2327/portfolio-os/issues) · [Features](#-features)
 
 </div>
 
