@@ -142,6 +142,7 @@ export default function AboutMe() {
         <Postcard src="/photos/switzerland.jpg" location="Switzerland" />
         <Postcard src="/photos/london.jpg" location="London" />
         <Postcard src="/photos/singapore.jpg" location="Singapore" />
+        <Postcard src="/photos/malaysia.jpg" location="Malaysia" focus="center 15%" />
         <Postcard src="/photos/dubai.jpg" location="Dubai" />
         <Postcard src="/photos/food.jpg" location="everywhere" />
       </div>
